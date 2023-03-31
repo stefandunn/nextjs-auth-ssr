@@ -2,18 +2,13 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { Claims } from "@auth0/nextjs-auth0";
 import Link from "next/link";
-import { NextAuthPage } from "@/types/Auth.types";
+import { NextAuthOptionalPage } from "@/types/Auth.types";
 import { withPageAuthOptional } from "@/utils/withPageAuthOptional";
 
 const inter = Inter({ subsets: ["latin"] });
-type PageProps = {
-  age?: number;
-};
 
-const Home: NextAuthPage<PageProps> = ({ user, age = 32 }) => {
-  console.log({ user, age });
+const Home: NextAuthOptionalPage = ({ user }) => {
   return (
     <>
       <Head>
@@ -23,38 +18,57 @@ const Home: NextAuthPage<PageProps> = ({ user, age = 32 }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        {user ? (
-          <Link
-            href="/api/auth/logout"
-            prefetch={false}
-            style={{
-              display: "inline-block",
-              padding: "1rem 4rem",
-              backgroundColor: "coral",
-              borderRadius: 8,
-              boxShadow: "0 5px 5px rgba(0, 0, 0, 0.2)",
-              fontFamily: "var(--font-mono)",
-            }}
-          >
-            Logout
-          </Link>
-        ) : (
-          <Link
-            href="/api/auth/login"
-            prefetch={false}
-            style={{
-              display: "inline-block",
-              padding: "1rem 4rem",
-              backgroundColor: "forestgreen",
-              color: "white",
-              borderRadius: 8,
-              boxShadow: "0 5px 5px rgba(0, 0, 0, 0.2)",
-              fontFamily: "var(--font-mono)",
-            }}
-          >
-            Login
-          </Link>
-        )}
+        <div>
+          {user ? (
+            <>
+              <Link
+                href="/api/auth/logout"
+                prefetch={false}
+                style={{
+                  display: "inline-block",
+                  padding: "1rem 4rem",
+                  backgroundColor: "coral",
+                  borderRadius: 8,
+                  boxShadow: "0 5px 5px rgba(0, 0, 0, 0.2)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
+                Logout
+              </Link>
+              <Link
+                href="/account"
+                prefetch={false}
+                style={{
+                  display: "inline-block",
+                  padding: "1rem 4rem",
+                  marginLeft: 16,
+                  backgroundColor: "plum",
+                  borderRadius: 8,
+                  boxShadow: "0 5px 5px rgba(0, 0, 0, 0.2)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
+                My account
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/api/auth/login"
+              prefetch={false}
+              style={{
+                display: "inline-block",
+                padding: "1rem 4rem",
+                backgroundColor: "forestgreen",
+                color: "white",
+                borderRadius: 8,
+                boxShadow: "0 5px 5px rgba(0, 0, 0, 0.2)",
+                fontFamily: "var(--font-mono)",
+              }}
+            >
+              Login
+            </Link>
+          )}
+        </div>
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
@@ -164,10 +178,4 @@ const Home: NextAuthPage<PageProps> = ({ user, age = 32 }) => {
 
 export default Home;
 
-export const getServerSideProps = withPageAuthOptional<PageProps>(async () => {
-  return {
-    props: {
-      age: 12,
-    },
-  };
-});
+export const getServerSideProps = withPageAuthOptional();

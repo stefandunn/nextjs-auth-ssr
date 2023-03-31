@@ -1,0 +1,14 @@
+.main {
+  font-family: var(--font-mono);
+  padding: 4rem;
+}
+
+.link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: royalblue;
+}
+
+.link:hover {
+  color: blueviolet;
+}
