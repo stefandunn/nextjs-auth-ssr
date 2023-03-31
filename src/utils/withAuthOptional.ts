@@ -1,10 +1,8 @@
 import { Claims, getSession } from "@auth0/nextjs-auth0";
 import { GetServerSideProps } from "next";
 
-export const withPageAuthOptional = <
-  P extends { [key: string]: any; user?: Claims }
->(
-  serverSideProps?: GetServerSideProps<P>
+export const withAuthOptional = <P extends { [key: string]: any }>(
+  serverSideProps?: GetServerSideProps<P & { user?: Claims }>
 ) => {
   const sessionServerProps: GetServerSideProps<P> = async (context) => {
     const { req, res } = context;

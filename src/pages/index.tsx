@@ -4,11 +4,15 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 import { NextAuthOptionalPage } from "@/types/Auth.types";
-import { withPageAuthOptional } from "@/utils/withPageAuthOptional";
+import { withAuthOptional } from "@/utils/withAuthOptional";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const Home: NextAuthOptionalPage = ({ user }) => {
+type HomeProps = {
+  title: string;
+};
+
+const Home: NextAuthOptionalPage<HomeProps> = ({ user, title }) => {
   return (
     <>
       <Head>
@@ -17,6 +21,7 @@ const Home: NextAuthOptionalPage = ({ user }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <h1>{title}</h1>
       <main className={styles.main}>
         <div>
           {user ? (
@@ -178,4 +183,10 @@ const Home: NextAuthOptionalPage = ({ user }) => {
 
 export default Home;
 
-export const getServerSideProps = withPageAuthOptional();
+export const getServerSideProps = withAuthOptional<HomeProps>(async () => {
+  return {
+    props: {
+      title: "HELLO WORLD",
+    },
+  };
+});

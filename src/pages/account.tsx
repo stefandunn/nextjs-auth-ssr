@@ -1,11 +1,15 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { NextAuthPage } from "@/types/Auth.types";
 import styles from "@/styles/Account.module.css";
 import Link from "next/link";
+import { withAuthRequired } from "@/utils/withAuthRequired";
 
-const About: NextAuthPage = ({ user }) => (
+type AboutProps = {
+  title: string;
+};
+
+const About: NextAuthPage<AboutProps> = ({ user, title }) => (
   <main className={styles.main}>
-    <h1>About</h1>
+    <h1>{title}</h1>
     <h3 style={{ marginTop: 16 }}>Name</h3>
     <p>{user.given_name}</p>
     <h3 style={{ marginTop: 16 }}>User JSON</h3>
@@ -31,4 +35,8 @@ const About: NextAuthPage = ({ user }) => (
 
 export default About;
 
-export const getServerSideProps = withPageAuthRequired();
+export const getServerSideProps = withAuthRequired<AboutProps>(async () => ({
+  props: {
+    title: "Account page!",
+  },
+}));
